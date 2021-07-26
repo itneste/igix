@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>FARRIS-DEVKIT</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'FARRIS-DEVKIT',
+      repo: '',
+      coverpage: true,
+      loadSidebar: true,
+      subMaxLevel: 3,
+      onlyCover: true,
+      // alias: {
+      //   '/.*/_sidebar.md': '/_sidebar.md'
+      // }
+      //search: 'auto',
+      // search: [
+      //   '/',
+      //   '/quick-start',
+      //   '/concept',
+      //   '/faq/how-to-convert-sub-grid-to-tree',
+      // ],
+      search: {
+        path: [
+          '/',
+          '/quick-start',
+          '/concept',
+          '/faq/how-to-convert-sub-grid-to-tree',
+        ],
+        placeholder: '搜索',
+        noData: '找不到对应的文档！',
+        hideOtherSidebarContent: true
+      }
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css">
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: '99d155f499eb236254f4',
+      clientSecret: '8f43457c25e08f253507c82bec3524450c3826ea',
+      repo: 'https://github.com/itneste/igix',
+      owner: 'itneste',
+      admin: ['itneste'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false
+    })
+  </script>
+</body>
+
+</html>
