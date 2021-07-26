@@ -1,1 +1,1 @@
-![farris](_media/_images/farris.png)
+![farris](media/images/farris.png)
