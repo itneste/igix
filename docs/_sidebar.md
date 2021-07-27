@@ -4,6 +4,7 @@
 
 * 指南
   * [BindingData](/guide/binding-data)
+  * [Entity](/guide/entity)
   
 * 特性
   * [表达式](/expression)
