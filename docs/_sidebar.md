@@ -7,3 +7,4 @@
 
 * FAQ
   * [如何将子表表格转换为树控件](/faq/how-to-convert-sub-grid-to-tree)
+  * [可编辑列表如何启用批量编辑](/faq/how-to-enable-batch-edit)
