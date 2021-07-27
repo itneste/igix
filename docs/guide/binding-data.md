@@ -47,7 +47,35 @@ public setValue(paths: string[], value: any, emitEventToView: boolean = false, e
   bindingData.setValue(['udt','udt_field'],'value');
   ```
 
+- 仅更新界面数据（不提交变更集）
 
+  ```javascript
+  bindingData.setValue(['name'],'ESG',true,false);
+  ```
+
+  > 注意：
+  >
+  > 仅更新界面数据时bindingData必须是对应组件上下文的bindingData。
+  >
+  > 更新数据的命令挂载到不同的组件，产生的效果也不相同。如果命令挂到了卡片视图模型，那么可以直接在构件中注入`FrameContext`或`BindingData`并更新数据就可以。但如果命令挂到了非卡片视图模型，则应该先获取到卡片上下文的bindingData。
+  >
+  > - 命令挂在卡片视图模型:
+  >
+  >   ```javascript
+  >   const frameContext = this.frameContext.bindingData;
+  >   frameContext.bindingData.setValue(['name'],'ESG');
+  >   ```
+  >
+  > - 命令挂在非卡片视图模型：
+  >
+  >   ```javascript
+  >   const cardFrameContext = this.frameContext.appContext.frameContextManager.getFrameContextById('card-frameId');
+  >   cardFrameContext.bindingData.setValue(['name'],'ESG');
+  >   ```
+  >
+  >   
+
+  
 
 ## 获取界面数据
 
