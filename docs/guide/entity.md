@@ -166,4 +166,3 @@ const minEmpAge   = this.entityService.min(['age']);
 const minDeptCode = this.entityService.min(['deptID', 'deptID_deptCode']);
 const minEduYear  = this.entityService.min(['edus', 'years']);
 ```
-
