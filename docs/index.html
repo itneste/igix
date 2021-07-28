@@ -34,12 +34,19 @@
           '/faq/how-to-add-hide-help',
           '/guide/binding-data',
           '/faq/navigation',
-          '/faq/how-to-get-control-ref'
+          '/faq/how-to-get-control-ref',
+          '/guide/repository'
         ],
         placeholder: '搜索',
         noData: '找不到对应的文档！',
         hideOtherSidebarContent: true
-      }
+      },
+      plugins: [
+        function (hook, vm) {
+          hook.doneEach(function () {
+            twemoji.parse(document);
+          });
+        }]
     }
   </script>
   <!-- Docsify v4 -->
@@ -47,8 +54,9 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css">
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script> -->
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/TaQini/docsify-twemoji@master/twemoji.min.js"></script>
   <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script> -->
   <!-- <script>

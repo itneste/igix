@@ -160,7 +160,7 @@ bindingData.list.findById(id: string): BindingObject;
 
    如果遇到赋值错误的情况可以通过BindingObject赋值或取值。
 
-### 通过bindingData赋值了，界面也刷新了，但保存不上:confused:
+### 通过bindingData赋值了，界面也刷新了，但保存不上:tired_face:
 
    这种情况多发生在有后端请求的情况下，比如通过bindingData赋值后紧接着有一个后端请求。由于bindingData赋值是异步的（目前是），这就可能导致赋值还没有结束（还没有产生变更）请求就发送了，从而请求中没有对应的变更，请求回来后会默认清空本地变更，从而导致界面上显示数据已经修改，但数据库中数据并未修改。
 
