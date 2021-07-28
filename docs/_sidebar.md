@@ -5,6 +5,7 @@
 * 指南
   * [BindingData](/guide/binding-data)
   * [Entity](/guide/entity)
+  * [Repository](/guide/repository)
   
 * 特性
   * [表达式](/expression)
