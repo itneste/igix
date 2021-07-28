@@ -2,7 +2,7 @@
   * [环境搭建](/quick-start)
   * [基本概念](/concept)
 
-* 指南
+* 指南🚀
   * [BindingData](/guide/binding-data)
   * [Repository](/guide/repository)
   
