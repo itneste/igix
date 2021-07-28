@@ -1,6 +1,6 @@
 # BindingData
 
-BindingData用于直接和界面绑定，它持有一个不可变的数据集合（BindingList），数据集合中是一个不可变的数据对象（BindingObject）。
+BindingData用于直接和界面绑定，它持有一个不可变的数据集合（BindingList），数据集合中是一个个不可变的数据对象（BindingObject）。
 
 BindingData结构如下：
 
