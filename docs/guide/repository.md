@@ -62,7 +62,7 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   entityManager.getEntityByPath(["主实体Id","子表名","子表id"]);
   ```
 
-  > entityManager属性仅存在于BefRepository类，因此在使用EntityManager时应先将Repository转换为BefRepository
+  !> **注意** entityManager属性仅存在于BefRepository类，因此在使用EntityManager时应先将Repository转换为BefRepository
 
 - 获取所有子表数据
 
