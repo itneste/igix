@@ -47,6 +47,7 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   ```javascript
   this.repository.entityCollection.addEntities(entities:T[])
   ```
+  
 - 批量添加子表实体
 
   ```javascript
@@ -55,6 +56,14 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   const childrenEntities = entityManager.createEntitiesByPath(["主实体Id","子表名s"], entityListData: any[])
   entityManager.appendEntitiesByPath(["主实体Id","子表名s"],childrenEntities);
   ```
+
+- 批量加载实体
+
+  ```javascript
+  this.repository.entityCollection.loadEntities(entities:T[]);
+  ```
+
+  > 加载实体会将本地仓库数据置为加载的实体。
 
 - 创建实体
 
