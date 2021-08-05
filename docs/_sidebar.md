@@ -5,7 +5,8 @@
 * 指南🚀
   * [BindingData](/guide/binding-data)
   * [Repository](/guide/repository)
-  * [HtmlTemplate](/guide/html-template)
+  * [Html模板](/guide/html-template)
+  * [导航](/guide/navigation)
   
 * 特性
   * [表达式](/expression)

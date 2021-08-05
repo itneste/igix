@@ -37,11 +37,11 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   ```
 - 添加子表实体
 
- ```javascript
+  ```javascript
   const befRepository = this.repository as BefRepository<any>;
   const entityManager = befRepository.entityManager;
   entityManager.appendEntityByPath("/主实体Id/子表名s",{子表JSON数据});
- ```
+  ```
 - 批量添加实体
 
   ```javascript
@@ -202,3 +202,22 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   const befRepository = this.repository as BefRepository<any>;
   befRepository.entityManager.clearAllEntityChanges();
   ```
+  
+- 批量新增子表数据
+  ```javascript
+  this.repository.batchAppendByPath(path: string, defaultValues: Array<any>);
+  ```
+  
+  > path `string`：/主表id/从表前端nodeCode，如果/1/orders
+  >
+  > defaultValues `Array<any>`：新增从表时的默认值，数组，元素为对象，key为字段名，value为默认值。
+  
+- 批量删除子表数据
+  
+  ```javascript
+  this.repository.batchRemoveByPath(path: string, ids: string);
+  ```
+  
+  > path `string`： /主表id/从表前端nodeCode，如果/1/orders
+  >
+  > ids `string` ：要删除的子表数据id，格式为`id1,id2,id3`
