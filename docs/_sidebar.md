@@ -7,13 +7,13 @@
   * [FrameContext](/guide/frame-context)
   * [BindingData](/guide/binding-data)
   * [Repository](/guide/repository)
-  * [Html模板](/guide/html-template)
   
 * 服务
   * [导航](/service/navigation)
   
 * 特性
   * [表达式](/feature/expression)
+  * [Html模板](/feature/html-template)
   
 * FAQ
   * [表单如何添加隐藏帮助](/faq/how-to-add-hide-help)
