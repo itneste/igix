@@ -1,4 +1,4 @@
-# 自定义构件中如何打开菜单或应用
+# 导航服务
 
 打开菜单及应用有两个服务：RouterService、NavigationService。其中RouterService不支持打开多标签页，后续只修改bug，不再增加新特性。开发构件或需要支持多标签页时应使用NavigationService。
 
