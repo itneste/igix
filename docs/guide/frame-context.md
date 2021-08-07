@@ -6,7 +6,18 @@
 
 ![image-20210806204755378](./media/image-20210806204755378.png)
 
-所以在编写`Web构件`时通常先引入FrameContext，如：
+从上图我们可以看出每个上下文都有自己的`ViewModel`、`UIState`，那么如何确定一个命令在执行时用的是哪个上下文呢？其实无论命令在哪个地方被调用，上下文都是命令所在的组件的上下文。即，如果命令挂载到了`detail-form-component`的视图模型，但命令最终被`root-component`上的按钮调用了，其上下文仍然是`detail-from-component`组件的上下文。之所以出现这种现象和Angular的依赖注入密不可分，由于Angular在查找`provider`的时候总是从自己的组件开始向上找，如果在组件内部找到了则不再继续查找，如果找不到则会继续向上，如果查找到最上级依然找不到就会报`No provider for xx`错误。
+
+既然如此，如果我们在`detail-form-component`中想要获取`root-component`中定义的变量（UIState）该如何做呢？答案是切换上下文，可以通过以下方式实现：
+
+```typescript
+// 方法1
+const rootFrameContext = this.frameContext.root;
+// 方法2
+const rootFrameContext = this.frameContext.appContext.frameContextManager.getFrameContextById('root-component');
+```
+
+通常在编写`Web构件`时先引入FrameContext，如：
 
 ```javascript
 import {FrameContext,BindingData,Repository} from '@farris/devkit';
