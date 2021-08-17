@@ -16,7 +16,7 @@
 
 添加`打开隐藏帮助`及`批量新增从表/从从表(batchAppendByPathBasedOnHelpSelections)`命令，该命令位于`批量编辑控制器`中。
 
-![image-20210205174159323](./images/image-20210205174159323.png)
+![image-20210205174159323](./media/image-20210205174159323.png)
 
 > 命令参数含义：
 >
