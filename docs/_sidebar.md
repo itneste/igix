@@ -25,4 +25,5 @@
   * [可编辑列表如何启用批量编辑](/faq/how-to-enable-batch-edit)
   * [自定义构件中如何打开菜单或应用](/faq/navigation)
   * [获取FarrisDataGrid或TreeGrid实例](/faq/how-to-get-control-ref)
+  * [如何通过多选帮助批量新增子表数据](/faq/how-to-batch-append-children-data-with-help)
 
