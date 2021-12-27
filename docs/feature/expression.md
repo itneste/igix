@@ -1,64 +1,138 @@
+# 表达式使用文档
 
-
-## 表达式分类
+## 场景说明
 
 表达式支持计算表达式、只读表达式、依赖表达式、相关表达式、帮助前表达式、校验表达式、必填表达式；
 
-- 计算表达式
+1. 计算表达式
 
-  字段的值通过其他字段或VO变量经过一系列计算得到。如：
+   字段的值通过其他字段或VO变量经过一系列计算得到。如：
 
-  ```typescript
-  订单金额=单价*订单数量
-  ```
+   ```bash
+   订单金额=单价*订单数量
+   ```
 
-- 只读表达式
+2. 只读表达式
 
-  根据实体字段值或VO变量动态控制卡片和表格字段的只读状态，当表达式返回`真`时字段只读。如：
+   使用实体字段值或VO变量动态控制卡片或表格字段的只读状态，当表达式返回`真`时字段只读。如：
 
-  ```typescript
-  if(主实体.订单金额>5000){return true;}
-  ```
+   ```javascript
+   // 订单金额大于5000时字段只读
+   if(订单金额>5000){
+     return true;
+   }else{
+     return false;
+   }
+   ```
 
-- 依赖表达式
+3. 依赖表达式
 
-  依赖表达式又称清空表达式，即当表达式返回`真`时，清空当前字段的值。
+   即清空表达式，即当表达式返回`真`时，清空当前字段的值。
 
-- 相关表达式
+4. 相关表达式
 
-  相关表达式又称显隐表达式，即当表达式返回`真`时，控件可见，否则隐藏控件或表格列。
+   即显隐表达式，即当表达式返回`真`时，控件可见，否则隐藏控件或表格列。
 
-- 帮助前表达式
+5. 帮助前表达式
 
-  帮助前表达式类似用户开发的帮助前，当表达式返回`真`时允许弹出帮助，否则弹出开发人员设置的提示并阻止帮助的弹出。
+   帮助前表达式类似用户开发的帮助前，当表达式返回`真`时允许弹出帮助，否则弹出开发人员设置的提示信息并阻止帮助的弹出。
 
-- 校验表达式
+6. 校验表达式
 
-  校验表达式类似前端校验，不过校验规则为表达式。当表达式返回`真`时校验通过（如果无返回值则认为`假`），否则校验失败并在控件下方展示开发人员配置的错误信息。
+   校验表达式类似前端校验，不过校验规则为表达式。当表达式返回`真`时校验通过（如果无返回值则认为`假`），否则校验失败并在控件下方展示开发人员配置的校验信息。
 
-- 必填表达式
+7. 必填表达式
 
-  校验表达式的一种场景。使用方法同校验表达式。
+   校验表达式的一种场景。当表达式计算结果为`真`时字段必填，否则非必填。
+
+## 运行效果
+
+![](./images/expression.gif)
+
+## 使用步骤
+
+### 配置表达式
+
+不同类型的表达式配置位置不同，只读、必填、相关表达式集成到了控件属性面板中的是否只读、是否必填、是否可见属性面板中。
+
+计算、依赖、校验在属性面板下方`表达式`分组中。
+
+### 编译表单
+
+表达式配置完成后生成并编译前端表单即可查看到效果。
 
 ## 表达式编写
 
-表达式引擎基于匿名函数实现，用户编写的表达式最终会放到一个匿名函数中执行。因此在控制台或脚本中执行报错的脚本在表达式中均可执行，如：
+表达式引擎基于匿名函数实现，用户编写的表达式最终会放到一个匿名函数中执行。通过匿名函数包装可以简化用户表达式编写过程。
 
-```typescript
-var x=1;
-var y =2;
-if(x>y){
-    return true;
+### 如何编写表达式
+
+表达式设计器内编写的代码最终会包装到一个函数内部，所以编写表达式就和编写方法一致，可以声明变量、定义函数、添加`判断语句`、`循环语句`。表达式除了标准的Javascript上下文外还支持内置函数、大数计算以简化开发过程。
+
+编写表达式时除需要基本的Javascript上下文、内置方法、大数等还需要参与计算的数据。表达式的数据来源有实体数据和VO变量。其中实体的表示方法为`实体编号.属性编号`。实体数据可以理解为一个大对象，变量名称就是实体编号，类似下面代码：
+
+```javascript
+var aEntity = {
+    name:"john",
+    age:20,
+    address:{
+        prov:'sd',
+        city:'jn'
+    }
+};
+```
+
+因此，表达式在编写时并不强依赖实体，仅识别数据结构。
+
+如果实体字段C的值等于实体字段A的值+实体字段B的值，且实体编号为SalesOrder，则表达式可以编写为：
+
+```javascript
+SalesOrder.A;+ SalesOrder.B;
+//or
+var a= SalesOrder.A;
+return a + SalesOrder.B;
+// or
+var a = SalesOrder.A;
+var b= SalesOrder.B;
+return a + b;
+```
+
+是不是和编写普通JavaScript脚本一样？我们再看下判断、循环等场景。
+
+```javascript
+var a = SalesOrder.A || 0;
+var b = SalesOrder.B || 0;
+if(a>=10){
+    return a;
 }else{
-    return false;
+    return b;
+}
+// or
+function compare(a,b){
+    return a >= b;
+}
+if(compare(a,b)){
+    console.log("a is biger then b");
 }
 ```
 
-通过以上封装，可以简化用户表达式编写过程。
+编写表达式和普通的Javascript开发基本一致，但表达式计算完成后必须要将结果返回。否则岂不是白白进行了一次计算。
 
-**注意：**
+### 返回值
 
-如果在表达式中使用了类似**判断、分支、函数**等`带返回的语句`或`有多行代码但没有return`，如果希望整个表达式有返回值，则应显式`return`，否则表达式计算结果为`undefined`。如果计算结果为`undefined`，则不会有任何作用。鉴于此，如果需要返回类似空字符串、null时，应显式`return`。
+表达式中只有一条语句，且表达式在第一行，则可以只写表达式，无需显式`return`（支持显式）：
+
+```javascript
+DefaultFunction.Sum([1,2,3])
+// or
+SalesOrder.A + SalesOrder.B;
+// or
+return SalesOrder.A + SalesOrder.B;
+```
+
+如果在表达式中使用了类似**判断、分支、函数**等`带返回的语句`或**以空行开始**或**有多行代码**，同时希望整个表达式有返回值，则应显式`return`，否则表达式计算结果为`undefined`。
+
+当计算结果为`undefined`时，不会有任何作用。鉴于此，如果需要返回类似空字符串、null时，应显式`return`。
 
 ```javascript
 function sum(x,y){
@@ -72,23 +146,18 @@ var s2=Entity.s2;
 return null;//必须显式return
 ```
 
-如果表达式中只有一条语句，则可以只写表达式，无需显式`return`（支持显式）：
-
-```javascript
-DefaultFunction.Sum([1,2,3])
-```
-
 ### 返回常量
 
 ```javascript
-2+3*4
+Entity.int1 + Entity.int2 // or return Entity.int1 + Entity.int2
+// 2*4+6 or return 2*4+6
 ```
 
 ### 判断
 
 ```javascript
-var x=1;
-var y =2;
+var x = 1;
+var y = 2;
 if(x>y){
     return true;
 }
@@ -112,47 +181,6 @@ return plus(1,2) + test();
 DefaultFunction.GetContextParameter("userId")
 ```
 
-
-
-## 表达式内置函数
-
-表达式支持表达式设计器中所有方法，可参考表达式设计器方法列表。
-
-## 表达式引擎上下文
-
-表达式引擎上下文是指用户在编写表达式、解析运行表达式时可以使用的上下文，目前表达式支持以下上下文：
-
-- 大数（BigNumber）
-- FrameContext
-- BindingData
-- 内置函数
-- 表单实体
-- 表单状态（UIState、VO变量）
-- Repository
-
-### 控制器上下文
-
-FrameContext、BindingData、Repository为当前表单的上下文，使用时在Web构建中使用一致，对应的是每个类型的实例，分别为：`frameContext`、`bindingData`、`repository`。基于此，在表达式中可以编写如下表达式：
-
-```typescript
-var userId = frameContext.viewModel.uiState["userId"];
-var version = bindingData.getValue(["version"]);
-```
-
-### 大数（BigNumber）
-
-为方便开发者通过表达式进行大数运算，表达式引擎中引入了大数上下文，`BigNumber`在上下文中为类型。使用时和`BigNumber`原生API一致。如下：
-
-```typescript
-var x = new BigNumber(0.1)
-var y = x.plus(0.2) // '0.3'
-BigNumber.isBigNumber(x)// true
-```
-
-### 内置函数
-
-内置函数和表达式设计器中函数定义一致，但表达式设计器中函数变动时需表达式引擎做对应的修改。
-
 ## 依赖解析
 
 表达式引擎加载表达式时会解析每个表达式的依赖，如果依赖解析出现问题会导致表达式运行时机不对。因此如果发现表达式引擎解析器解析依赖错误时可以通过手动修复的方式指定依赖。
@@ -174,85 +202,76 @@ BigNumber.isBigNumber(x)// true
 
 将以上注释放到表达式中即可。
 
-## 表达式引擎
+## 常见问题
 
-表达式计算时依赖了表达式引擎，目前表达式引擎为独立模块，可以单独使用。
+### 调试
 
-使用前需安装该模块`@farris/expression-engine`
-
-```typescript
-import { ExpressionEngine } from '@farris/expression-engine';
-```
-
-使用方法
-
-### 1、算术表达式
+在表达式开发过程中会遇到表达式执行结果与预期不一致的情况，此时需要对编写的表达式进行调试。可以在表达式最前面添加`debugger`关键字，如：
 
 ```javascript
-// 实例化表达式引擎
-var engine = new ExpressionEngine();
-// 计算表达式
-var result = engine.eval("2+3*4");
+debugger;return Entity.int1 + Entity.int2;
 ```
 
-### 2、变量表达式
+> 添加`debugger`后，后面的语句必须加`return`;
 
-```typescript
-// 实例化表达式引擎
-const engine = new ExpressionEngine();
-// 获取表达式上下文
-const context = expressionEngine.getContext();
-// 添加表达式上下文
-context.set("x",1);
-context.set("y",2);
-// 计算表达式
-engine.eval("x + y");
-```
+![image-20211202112147938](./images/image-20211202112147938.png)
 
-### 3、访问对象属性
+添加debugger无需再执行一次生成编译，建议直接修改部署目录下的表达式描述文件，以节约开发时间。
+
+### 浮点运算
+
+Javascript浮点运算存在精度问题，如：
 
 ```javascript
-// 实例化表达式
-const expression = new Expression("var f1= FormEE1.f1; var i1=FormEE1.i1;if(i1>10 && f1>10){var plus = new BigNumber(i1).plus(f1).toFixed(); return  plus;}else{return \"\";}");
-// 实例化上下文
-const context = new ExpressionContext();
-// 设置上下文
-context.set("FormEE1",{f1:10,i1:12});
-// 计算表达式
-expression.eval(context);
+0.1+0.2 = 0.30000000000000004
+2.55 * 3 = 7.6499999999999995
 ```
 
-### 4、数组及可遍历对象
+鉴于此在涉及浮点运算时应使用BigNumber进行运算。当字段类型为大数时直接返回字符串即可。
 
 ```javascript
-const engine = new ExpressionEngine();
-const context = engine.getContext();
-context.set("Record", { items: [{ score: 100 }, { score: 99 }, { score: 1 }, { score: 88 }, { score: 12 },{ score: 1 }] });
-engine.eval("DefaultFunction.AvgByProp(\"Record.items\",\"score\")");
+new BigNumber(0.1).plus(0.2).toNumber() // 非大数字段
+new BigNumber('99999999999').plus('99999999999999999').toFixed() // 大数字段
 ```
 
-### 5、调用JavaScript方法
+### 字段取值
+
+获取主表或子表简单字段时直接使用`实体.字段名`或`实体.子表s.字段名`即可，但涉及到udt或关联字段时直接使用点操作符可能会产生空引用错误，此时需要在使用时对字段进行判断。
 
 ```javascript
-const engine = new ExpressionEngine();
-engine.eval("console.log(\"hello world!\")");
+Entity.child1s.price // 可能值为price、undefined
+Entity.child1s.udt.udt_prop1 // 当子表没有数据时会报错
+// 建议使用如下方式获取字段值
+var prop1 = Entity.child1s && Entity.child1s.udt && Entity.child1s.udt.udt_prop1 || 0;
+// 如果prop1为数字类型，则默认值为0，如果为字符串则应返回空字符串,其余类型类似。如：
+var prop2 = Entity.child1s && Entity.child1s.udt && Entity.child1s.udt.udt_prop2 || '';
 ```
 
-### 6、大数值计算
+### 字段路径
 
-```typescript
-const engine = new ExpressionEngine();
-engine.eval("var x = new BigNumber(0.1);var y = x.plus(0.2);BigNumber.isBigNumber(x)");
+使用表达式设计器双击选择子表字段时默认的格式为`Entity.child1s[0].prop1`，表达式场景目前没有第一行的概念，因此建议删除`[0]`，虽然表达式引擎在表达式初始化时对`[0]`及`*`做了处理，但后续可能会涉及到该场景，所以在选择字段时请务必删除字段路径中的`[d]`及`*`。
+
+```javascript
+if(Entity.child1s[0].name){ // 修改为if(Entity.child1s.name)
+    return true;
+}else{
+    return false;
+}
 ```
 
-### 7、添加自定义函数
+### 字段结构、字段值
 
-```typescript
-const engine = new ExpressionEngine();
-const context = service.getContext();
-engine.addFun("sum", (x, y) => { return x + y + x * y; });
-context.set("x", 5);
-context.set("y", 4);
-engine.eval("sum(x,y)");
+表达式中的字段分两种场景使用：结构、值；结构是指计算时不使用该字段路径的值，仅使用结构，所以两端应该有双引号或单引号。而作为值使用时不能添加双引号，否则会当作字符串进行计算。
+
+```javascript
+DefaultFunction.SumByProp("Entity.child1s","int1") // SumByProp参数使用的是字段的结构
+DefaultFunction.Sum(Entity.child1s.int1,Entity.child1s.int2); // 使用字段值
 ```
 
+### 循环依赖
+
+设计表达式时应避免出现循环依赖。
+
+```javascript
+Entity.a = Entity.a + Entity.b; // 循环依赖
+```
