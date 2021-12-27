@@ -42,6 +42,13 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   const entityManager = befRepository.entityManager;
   entityManager.appendEntityByPath("/主实体Id/子表名s",{子表JSON数据});
   ```
+- 删除子表实体
+
+  ```javascript
+  const befRepository = this.repository as BefRepository<any>;
+  const entityManager = befRepository.entityManager;
+  entityManager.removeEntityByPath("/主实体Id/子表名s","子表数据id");
+  ```
 - 批量添加实体
 
   ```javascript
