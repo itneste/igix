@@ -18,6 +18,7 @@
   * [表达式](/feature/expression)
   * [Html模板](/feature/html-template)
   * [消息通信](/feature/message-pipe)
+  * [导航状态同步](/feature/navigation-support-data-and-status-synchronous)
   
 * FAQ
   * [表单如何添加隐藏帮助](/faq/how-to-add-hide-help)
