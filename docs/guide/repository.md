@@ -53,7 +53,7 @@ Repository中存储的数据是Entity类型，可以通过API对数据进行修�
   ```javascript
   const befRepository = this.repository as BefRepository<any>;
   const entityManager = befRepository.entityManager;
-  const childrenEntities = entityManager.createEntitiesByPath(["主实体Id","子表名s"], entityListData: any[])
+  const childrenEntities = entityManager.createEntitiesByPath("/主实体Id/子表名s", entityListData: any[])
   entityManager.appendEntitiesByPath(["主实体Id","子表名s"],childrenEntities);
   ```
 
