@@ -1,7 +1,7 @@
 ![logo](media/images/logo.svg)
-> 为了让仅有一次的人生绽放光彩，结出丰硕的果实
+> 别人存你的号是为了跟你联系，我就不一样，我存你的号就是为了不接.
 
 # FARRIS DEVKIT 文档
 
-[Get Started](/quick-start)
+[快速上手](/quick-start)
 
