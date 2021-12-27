@@ -4,11 +4,11 @@ BindingData用于直接和界面绑定，它持有一个不可变的数据集合
 
 BindingData结构如下：
 
-![image-20210727141931872](./media/image-20210727141931872.png)
+![image-20210727141931872](./images/image-20210727141931872.png)
 
-![image-20210727142606782](./media/image-20210727142606782.png)
+![image-20210727142606782](./images/image-20210727142606782.png)
 
-![image-20210727142258720](./media/image-20210727142258720.png)
+![image-20210727142258720](./images/image-20210727142258720.png)
 
 从上述类图中可以看到BindingData持有一个list，类型是BindingList，BindingList内部通过innerList存放BindingObject。
 
