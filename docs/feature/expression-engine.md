@@ -6,10 +6,10 @@
 
 使用前需安装该模块`@farris/expression-engine`并导入。
 
-```typescript
+```javascript
 import { ExpressionEngine } from '@farris/expression-engine';
 ```
-
+!> **重要** 表达式引擎基于TypeScript开发，是一个Javascript模块，因此使用时无需注入，直接实例化即可。
 ## 如何使用
 
 ### 算术表达式
@@ -23,7 +23,7 @@ var result = engine.eval("2+3*4");
 
 ### 变量表达式
 
-```typescript
+```javascript
 // 实例化表达式引擎
 const engine = new ExpressionEngine();
 // 获取表达式上下文
@@ -68,14 +68,14 @@ var result = engine.eval("console.log(\"hello world!\")");
 
 ### 大数值计算
 
-```typescript
+```javascript
 const engine = new ExpressionEngine();
 var result = engine.eval("var x = new BigNumber(0.1);var y = x.plus(0.2);BigNumber.isBigNumber(x)");
 ```
 
 ### 添加自定义函数
 
-```typescript
+```javascript
 const engine = new ExpressionEngine();
 const context = service.getContext();
 engine.addFun("sum", (x, y) => { return x + y + x * y; });
@@ -88,7 +88,7 @@ var result = engine.eval("sum(x,y)");
 
 与eval不同，编译运行会缓存执行的代码，从而提高运行效率。
 
-```typescript
+```javascript
 // 实例化表达式
 const expression = new Expression("DefaultFunction.Contains(fullString,targetString)");
 // 实例化上下文
