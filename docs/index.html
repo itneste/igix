@@ -42,7 +42,6 @@
 </head>
 
 <body>
-  <iframe id="app" allowfullscreen="true"></iframe>
   <div id="loading">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
       style="margin:auto;background:transparent;display:block;" width="150px" height="150px" viewBox="0 0 100 100"
@@ -97,9 +96,7 @@
         results.sort((v1, v2) => v1.delay - v2.delay);
         var site = results[0];
         window.setTimeout(() => {
-          document.getElementById('loading').remove();
-          document.getElementById('app').src = site.url + "/home.html";
-          document.getElementById('app').style.display = 'block';
+          window.location.replace(site.url + "/home.html");
         }, 1500);
       }
     }
