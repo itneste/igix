@@ -1,5 +1,5 @@
 ![logo](media/images/logo.svg)
-> 别人存你的号是为了跟你联系，我就不一样，我存你的号就是为了不接.
+> 小时候最讨厌吃饭和睡觉，现在想想真贱。
 
 # FARRIS DEVKIT 文档
 
