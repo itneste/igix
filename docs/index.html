@@ -96,7 +96,11 @@
         results.sort((v1, v2) => v1.delay - v2.delay);
         var site = results[0];
         window.setTimeout(() => {
-          window.location.replace(site.url + "/home.html");
+          var url = site.url + "/home.html";
+          if (window.location.hash) {
+            url += window.location.hash;
+          }
+          window.location.replace(url);
         }, 1500);
       }
     }
