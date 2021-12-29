@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <title>FARRIS开发框架</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="FARRIS开发框架">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./public/theme-dark.css">
+  <link rel="stylesheet" href="./public/docsify-gifcontrol.css">
+  <link rel="stylesheet" href="./public/all.min.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Farris开发框架',
+      coverpage: true,
+      loadSidebar: true,
+      subMaxLevel: 2,
+      onlyCover: true,
+      auto2top: true,
+      search: {
+        path: [
+          '/',
+          '/quick-start',
+          '/concept',
+          '/feature/expression',
+          // guide
+          '/guide/frame-context',
+          '/guide/binding-data',
+          '/guide/repository',
+          // service
+          '/service/navigation',
+          // faq
+          '/faq/how-to-convert-sub-grid-to-tree',
+          '/faq/how-to-enable-batch-edit',
+          '/faq/how-to-add-hide-help',
+          '/faq/navigation',
+          '/faq/how-to-get-control-ref',
+
+        ],
+        placeholder: '搜索',
+        noData: '找不到对应的文档！',
+        hideOtherSidebarContent: true
+      },
+      plugins: [
+        function (hook, vm) {
+          hook.doneEach(function () {
+            twemoji.parse(document);
+          });
+        }]
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <script src="./public/docsify.js"></script>
+  <script src="./public/zoom-image.min.js"></script>
+  <script src="./public/search.min.js"></script>
+  <script src="./public/docsify-copy-code.min.js"></script>
+  <script src="./public/twemoji.min.js"></script>
+  <script src="./public/docsify-themeable.min.js"></script>
+  <script src="./public/docsify-gifcontrol.js"></script>
+  </script>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+</body>
+
+</html>
