@@ -27,7 +27,7 @@ var result = engine.eval("2+3*4");
 // 实例化表达式引擎
 const engine = new ExpressionEngine();
 // 获取表达式上下文
-const context = expressionEngine.getContext();
+const context = engine.getContext();
 // 添加表达式上下文
 context.set("x",1);
 context.set("y",2);
