@@ -31,7 +31,7 @@ function share(hook, vm) {
     href.text = "复制地址";
     href.className = "share app-name-link";
     href.onclick = function () {
-      var url = "http://igix.io/index.html" + window.location.hash;
+      var url = "https://igix.io/index.html" + window.location.hash;
       copyToClipboard(url);
       href.text = "已复制";
       window.setTimeout(()=>{
