@@ -1,6 +1,8 @@
 .share{
   position: fixed;
+  font-weight:bold;
   top: 15px;
   right: 15px;
-  color: var(--sidebar-name-color);
+  color: #fff;
+  z-index:999;
 }
