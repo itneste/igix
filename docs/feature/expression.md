@@ -8,8 +8,9 @@
 
    字段的值通过其他字段或VO变量经过一系列计算得到。如：
 
-   ```bash
-   订单金额=单价*订单数量
+   ```javascript
+   // 订单总金额 = 订单表金额合计
+   DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
    ```
 
 2. 只读表达式
@@ -17,12 +18,8 @@
    使用实体字段值或VO变量动态控制卡片或表格字段的只读状态，当表达式返回`真`时字段只读。如：
 
    ```javascript
-   // 订单金额大于5000时字段只读
-   if(订单金额>5000){
-     return true;
-   }else{
-     return false;
-   }
+   // 订单编号不包含GS时控件只读
+   !DefaultFunction.Contains(SO.billCode,"GS")
    ```
 
 3. 依赖表达式
@@ -49,174 +46,164 @@
 
 ![](./images/expression.gif)
 
-## 使用步骤
+> 图中包含以下表达式：
+>
+> 校验表达式：其中卡片和表格中的交货日期设置了校验表达式，值不能小于当天。
+>
+> 计算表达式：卡片中订单总金额的值等于采购明细中单价*数量的和。
+>
+> 必填表达式：当是否红单值为真时，原蓝单编号必填。
+>
+> 依赖表达式：当是否红单值为假时，清空原蓝单编号。
+>
+> 只读表达式：当是否红单值为真时，原蓝单编号可编辑。当值为假时，原蓝单编号字段只读。
 
-### 配置表达式
+## 开发步骤
 
-不同类型的表达式配置位置不同，只读、必填、相关表达式集成到了控件属性面板中的是否只读、是否必填、是否可见属性面板中。
+1. ### 配置表达式
 
-计算、依赖、校验在属性面板下方`表达式`分组中。
+   不同类型的表达式配置位置不同，只读、必填、相关表达式集成到了控件属性面板中的是否只读、是否必填、是否可见属性面板中。
 
-### 编译表单
+   计算、依赖、校验在属性面板下方`表达式`分组中。
 
-表达式配置完成后生成并编译前端表单即可查看到效果。
+   > <img src="./images/image-20211229191330183.png" align="left">
+   >
+   > 表达式与是否可见、只读、必填等属性在一个属性中控制。
 
-## 表达式编写
+   > <img src="./images/image-20211229191549225.png" align="left"/>
+   >
+   > 表达式在属性面板单独区域中。
 
-表达式引擎基于匿名函数实现，用户编写的表达式最终会放到一个匿名函数中执行。通过匿名函数包装可以简化用户表达式编写过程。
+   找到表达式配置入口后下一步开始编写表达式。
+   
+   #### 表达式编写
 
-### 如何编写表达式
+   表达式引擎基于匿名函数实现，用户编写的表达式最终会放到一个匿名函数中执行。通过匿名函数包装可以简化用户表达式编写过程。
+   
+   ##### 如何编写表达式
+   
+   表达式设计器内编写的代码最终会包装到一个函数内部，所以编写表达式就和编写方法一致，可以声明变量、定义函数、添加`判断语句`、`循环语句`。表达式除了标准的Javascript上下文外还支持内置函数、大数计算以简化开发过程。
 
-表达式设计器内编写的代码最终会包装到一个函数内部，所以编写表达式就和编写方法一致，可以声明变量、定义函数、添加`判断语句`、`循环语句`。表达式除了标准的Javascript上下文外还支持内置函数、大数计算以简化开发过程。
+   编写表达式时除需要基本的Javascript上下文、内置方法、大数等还需要参与计算的数据。表达式的数据来源有实体数据和VO变量。其中实体的表示方法为`实体编号.属性编号`。实体数据可以理解为一个大对象，变量名称就是实体编号，类似下面代码：
+   ```javascript
+   var SO = {
+    billCode:"john",
+    totalFee:20,
+    createAt:"2012-12-23"
+   };
+   ```
+   
+   因此，表达式在编写时并不强依赖实体，仅识别数据结构。
+   
+   如果实体字段`交货日期createAt`的值等于日期类型的字段`createAt`的值加5天，且实体编号为`SO`，则表达式可以编写为：
+   
+   ```javascript
+   // 推荐优先使用内置函数
+   DefaultFunction.DateTimeAddDays(SO.createAt,5)
+   // DateTimeAddDays返回的是日期对象，如果需要转换为字符串，则可以调用FormatDefineDate方法
+   // DefaultFunction.FormatDefineDate("yyyy-MM-dd",DefaultFunction.DateTimeAddDays(SO.createAt,5))
+   ```
+   
+   是不是和编写普通JavaScript脚本一样？我们再看下判断、循环等场景。
+   
+   ```javascript
+   if(SO.totalFee>=10){
+      return a;
+   }else{
+      return b;
+   }
+   ```
+   
+   当内置函数无法满足需求时，可以编写Javascript代码。语法和普通的Javascript一致，但表达式计算完成后应将结果返回。
+   
+   ##### 返回值
+   
+   表达式中只有一条语句，且表达式在第一行，则可以只写表达式，无需显式`return`（支持显式）：
+   
+   ```javascript
+   DefaultFunction.Sum([1,2,3])
+   // 或者
+   return DefaultFunction.Sum([1,2,3]);
+   ```
+   
+   如果在表达式中使用了类似**判断、分支、函数**等`带返回的语句`或**以空行开始**或**有多行代码**，同时希望整个表达式有返回值，则应显式`return`，否则表达式计算结果为`undefined`。
+   
+   当计算结果为`undefined`时，不会有任何作用。鉴于此，如果需要返回类似`空字符串`、`null`时，应显式`return`。
+   
+   ```javascript
+   var bxCode = DefaultFunction.Add("bx_",SO.billCode);
+   return bxCode;// 换行后必须显式return
+   ```
+   
+   ##### 返回常量
+   
+   ```javascript
+   SO.int1 + SO.int2 // 或者 return SO.int1 + SO.int2
+   // 2*4+6 // 或者 return 2*4+6
+   ```
+   
+   ##### 判断
+   
+   ```javascript
+   var x = 1;
+   var y = 2;
+   if(x>y){
+   	return true;
+   }
+   ```
+   
+   ##### 自定义方法
+   
+   ```javascript
+   function plus(x,y){
+   	return x+y;
+   }
+   return plus(1,2);
+   ```
+   ##### 获取UIState
+   ```javascript
+   DefaultFunction.GetContextParameter("userId")
+   ```
+   
+2. 编译表单
 
-编写表达式时除需要基本的Javascript上下文、内置方法、大数等还需要参与计算的数据。表达式的数据来源有实体数据和VO变量。其中实体的表示方法为`实体编号.属性编号`。实体数据可以理解为一个大对象，变量名称就是实体编号，类似下面代码：
+   表达式配置完成后生成并编译前端表单即可查看到效果。
 
-```javascript
-var aEntity = {
-    name:"john",
-    age:20,
-    address:{
-        prov:'sd',
-        city:'jn'
-    }
-};
-```
+## 常见问题
 
-因此，表达式在编写时并不强依赖实体，仅识别数据结构。
-
-如果实体字段C的值等于实体字段A的值+实体字段B的值，且实体编号为SalesOrder，则表达式可以编写为：
-
-```javascript
-SalesOrder.A;+ SalesOrder.B;
-//or
-var a= SalesOrder.A;
-return a + SalesOrder.B;
-// or
-var a = SalesOrder.A;
-var b= SalesOrder.B;
-return a + b;
-```
-
-是不是和编写普通JavaScript脚本一样？我们再看下判断、循环等场景。
-
-```javascript
-var a = SalesOrder.A || 0;
-var b = SalesOrder.B || 0;
-if(a>=10){
-    return a;
-}else{
-    return b;
-}
-// or
-function compare(a,b){
-    return a >= b;
-}
-if(compare(a,b)){
-    console.log("a is biger then b");
-}
-```
-
-编写表达式和普通的Javascript开发基本一致，但表达式计算完成后必须要将结果返回。否则岂不是白白进行了一次计算。
-
-### 返回值
-
-表达式中只有一条语句，且表达式在第一行，则可以只写表达式，无需显式`return`（支持显式）：
-
-```javascript
-DefaultFunction.Sum([1,2,3])
-// or
-SalesOrder.A + SalesOrder.B;
-// or
-return SalesOrder.A + SalesOrder.B;
-```
-
-如果在表达式中使用了类似**判断、分支、函数**等`带返回的语句`或**以空行开始**或**有多行代码**，同时希望整个表达式有返回值，则应显式`return`，否则表达式计算结果为`undefined`。
-
-当计算结果为`undefined`时，不会有任何作用。鉴于此，如果需要返回类似空字符串、null时，应显式`return`。
-
-```javascript
-function sum(x,y){
-    return x+y;
-}
-return sum(x,y);// 必须显式return
-
------------------------------------------
-var s1= Entity.s1;
-var s2=Entity.s2;
-return null;//必须显式return
-```
-
-### 返回常量
-
-```javascript
-Entity.int1 + Entity.int2 // or return Entity.int1 + Entity.int2
-// 2*4+6 or return 2*4+6
-```
-
-### 判断
-
-```javascript
-var x = 1;
-var y = 2;
-if(x>y){
-    return true;
-}
-```
-
-### 自定义方法
-
-```javascript
-function plus(x,y){
-    return x+y;
-}
-function test(){
-    return new Date().valueOf();
-}
-return plus(1,2) + test();
-```
-
-### 获取UIState
-
-```javascript
-DefaultFunction.GetContextParameter("userId")
-```
-
-## 依赖解析
+### 依赖解析
 
 表达式引擎加载表达式时会解析每个表达式的依赖，如果依赖解析出现问题会导致表达式运行时机不对。因此如果发现表达式引擎解析器解析依赖错误时可以通过手动修复的方式指定依赖。
-
+	
 表达式依赖目前支持实体属性、UIState。依赖最终为字符串数组，每一个元素代表一个依赖。实体属性依赖以`ENTITY~`开头，状态依赖以`STATE~`开头。基于此，如果某个表达式依赖了实体的price和UIState的total属性，则依赖数组为:
 
 ```typescript
 [
-    "ENTITY~/price",
-    "STATE~/total"
+	"ENTITY~/price",
+	"STATE~/total"
 ]
 ```
 
 如果表达式依赖解析错误，则可以在编写表达式的时候在表达式中指定依赖，以上依赖编写为：
-
 ```javascript
 /*__define__({deps:["ENTITY~/price","STATE~/total"]})*/
 ```
 
 将以上注释放到表达式中即可。
 
-## 常见问题
-
 ### 调试
 
 在表达式开发过程中会遇到表达式执行结果与预期不一致的情况，此时需要对编写的表达式进行调试。可以在表达式最前面添加`debugger`关键字，如：
 
 ```javascript
-debugger;return Entity.int1 + Entity.int2;
+debugger;return SO.int1 + SO.int2;
 ```
 
 > 添加`debugger`后，后面的语句必须加`return`;
 
 ![image-20211202112147938](./images/image-20211202112147938.png)
 
-添加debugger无需再执行一次生成编译，建议直接修改部署目录下的表达式描述文件，以节约开发时间。
+debugger只在开发过程中使用，建议直接修改部署目录下的表达式描述文件，以节约开发时间。
 
 ### 浮点运算
 
@@ -273,5 +260,5 @@ DefaultFunction.Sum(Entity.child1s.int1,Entity.child1s.int2); // 使用字段值
 设计表达式时应避免出现循环依赖。
 
 ```javascript
-Entity.a = Entity.a + Entity.b; // 循环依赖
+字段A的值 = 字段A的值 + 字段B的值; // 循环依赖
 ```
