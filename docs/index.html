@@ -82,8 +82,8 @@
           ping.ping(host, (err, data) => {
             if (err) {
               item.delay = -1;
-              results.push(item);
             }
+            results.push(item);
             onResult();
           });
         })(domain, site);
