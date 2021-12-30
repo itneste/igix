@@ -68,7 +68,7 @@
     <p class="title">正在选择离你最近的服务器</p>
   </div>
   <script>
-    var sites = [{ url: "https://igix.io", name: "github" }, { url: "http://network.jiangsion.com:4000", name: "home" }];
+    var sites = [{ url: "https://igix.io", name: "github" }, { url: "http://network.jiangsion.com:4000", name: "home" },{url:"http://xiajianglong00.home.langchao.com", name:"office"}];
     var timestamp = {};
     var results = [];
     (function () {
@@ -87,7 +87,7 @@
             onResult();
           };
         })(index);
-        image.src = site.url + 'speedtest.png?v=' + Math.random();
+        image.src = site.url + '/speedtest.png?v=' + Math.random();
         timestamp[site.url] = new Date().valueOf();
       }
       window.setTimeout(() => {
