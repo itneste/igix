@@ -90,6 +90,18 @@
         image.src = site.url + 'speedtest.png?v=' + Math.random();
         timestamp[site.url] = new Date().valueOf();
       }
+      window.setTimeout(() => {
+        var site = null;
+        if (results.length > 0) {
+          results.sort((v1, v2) => v1.delay - v2.delay);
+          site = results[0];
+        }
+        var url = site && site.url + "/home.html" || "https://igix.io/home.html";
+        if (window.location.hash) {
+          url += window.location.hash;
+        }
+        window.location.replace(url);
+      }, 5000);
     })();
     function onResult() {
       if (Object.keys(timestamp).length === results.length) {
@@ -106,4 +118,5 @@
     }
   </script>
 </body>
+
 </html>
