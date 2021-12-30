@@ -66,11 +66,11 @@
 
    计算、依赖、校验在属性面板下方`表达式`分组中。
 
-   > <img src="./images/image-20211229191330183.png" align="left">
+   > <img src="./feature/images/image-20211229191330183.png" align="left">
    >
    > 表达式与是否可见、只读、必填等属性在一个属性中控制。
 
-   > <img src="./images/image-20211229191549225.png" align="left"/>
+   > <img src="./feature/images/image-20211229191549225.png" align="left"/>
    >
    > 表达式在属性面板单独区域中。
 
