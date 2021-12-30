@@ -77,7 +77,7 @@
         var domain = site.url;
         var name = site.name;
         var image = new Image();
-        image.onerror = (function (idx) {
+        image.onload = (function (idx) {
           return function () {
             var current = sites[idx];
             var delay = new Date().valueOf() - timestamp[current.url];
@@ -87,7 +87,17 @@
             onResult();
           };
         })(index);
-        image.src = site.url + '/speedtest.png?v=' + Math.random();
+		image.onerror=(function(idx){
+			return function () {
+            var current = sites[idx];
+            var delay = 9999;
+            timestamp[current.url] = delay
+            current.delay = delay;
+            results.push(current);
+            onResult();
+          };
+		})(index);
+        image.src = site.url + '/media/images/farris.png?v=' + Math.random();
         timestamp[site.url] = new Date().valueOf();
       }
       window.setTimeout(() => {
