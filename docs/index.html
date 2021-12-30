@@ -92,7 +92,7 @@
       }
     })();
     function onResult() {
-      if (Object.keys(timestamp).length === results.length) {
+      if (sites.length === results.length) {
         results = results.filter(item => item.delay > 0).sort((v1, v2) => v1.delay - v2.delay);
         var site = results[0];
         window.setTimeout(() => {
