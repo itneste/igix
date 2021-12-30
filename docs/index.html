@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="FARRIS开发框架" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <script src="./public/ping.js"></script>
   <style>
     html,
     body {
@@ -71,42 +72,26 @@
     var sites = [{ url: "http://igix.io", name: "github" }, { url: "http://network.jiangsion.com:4000", name: "home" }];
     var timestamp = {};
     var results = [];
+    var ping = new Ping({ favicon: "/media/images/logo.svg", timeout: 1500 });
     (function () {
       for (var index = 0; index < sites.length; index++) {
         var site = sites[index];
         var domain = site.url;
         var name = site.name;
-        var image = new Image();
-        image.onerror = (function (idx) {
-          return function () {
-            var current = sites[idx];
-            var delay = new Date().valueOf() - timestamp[current.url];
-            timestamp[current.url] = delay
-            current.delay = delay;
-            results.push(current);
+        (function (host, item) {
+          ping.ping(host, (err, data) => {
+            if (err) {
+              item.delay = -1;
+              results.push(item);
+            }
             onResult();
-          };
-        })(index);
-		
-        image.src = site.url + '/speedtest.png?v=' + Math.random();
-        timestamp[site.url] = new Date().valueOf();
+          });
+        })(domain, item);
       }
-      window.setTimeout(() => {
-        var site = null;
-        if (results.length > 0) {
-          results.sort((v1, v2) => v1.delay - v2.delay);
-          site = results[0];
-        }
-        var url = site && site.url + "/home.html" || "http://igix.io/home.html";
-        if (window.location.hash) {
-          url += window.location.hash;
-        }
-        window.location.replace(url);
-      }, 5000);
     })();
     function onResult() {
       if (Object.keys(timestamp).length === results.length) {
-        results.sort((v1, v2) => v1.delay - v2.delay);
+        results = results.filter(item => item.delay > 0).sort((v1, v2) => v1.delay - v2.delay);
         var site = results[0];
         window.setTimeout(() => {
           var url = site.url + "/home.html";
