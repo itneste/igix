@@ -77,7 +77,7 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
 
 ## 开发步骤
 
-###  1、 配置表达式
+###  1.配置表达式
 
    不同类型的表达式配置位置不同，只读、必填、相关表达式集成到了控件属性面板中的是否只读、是否必填、是否可见属性面板中。
 
@@ -183,7 +183,7 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
    ```javascript
    DefaultFunction.GetContextParameter("userId")
    ```
-###  2、编译表单
+###  2.编译表单
 
    表达式配置完成后生成并编译前端表单即可查看效果。
 
