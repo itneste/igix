@@ -77,7 +77,7 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
 
 ## 开发步骤
 
-1. ### 配置表达式
+###  1、 配置表达式
 
    不同类型的表达式配置位置不同，只读、必填、相关表达式集成到了控件属性面板中的是否只读、是否必填、是否可见属性面板中。
 
@@ -88,21 +88,21 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
    > 表达式与是否可见、只读、必填等属性在一个属性中控制。
 
    
-   
+
    > ![](./images/image-20211229191549225.png)
    >
    > 表达式在属性面板单独区域中。
-   
+
    找到表达式配置入口后下一步开始编写表达式。
 
    #### 1.1 表达式编写
-   
+
    表达式引擎基于匿名函数实现，用户编写的表达式最终会放到一个匿名函数中执行。通过匿名函数包装可以简化用户表达式编写过程。
-   
+
    ##### 1.1.1 如何编写表达式
 
    表达式设计器内编写的代码最终会包装到一个函数内部，所以编写表达式就和编写方法一致，可以声明变量、定义函数、添加`判断语句`、`循环语句`。表达式除了标准的Javascript上下文外还支持内置函数、大数计算以简化开发过程。
-   
+
    编写表达式时除需要基本的Javascript上下文、内置方法、大数等还需要参与计算的数据。表达式的数据来源有实体数据和VO变量。其中实体的表示方法为`实体编号.属性编号`。实体数据可以理解为一个大对象，变量名称就是实体编号，类似下面代码：
    ```javascript
    var SO = {
@@ -111,20 +111,20 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
     createAt:"2012-12-23"
    };
    ```
-   
+
    因此，表达式在编写时并不强依赖实体，仅识别数据结构。
-   
+
    如果实体字段`交货日期createAt`的值等于日期类型的字段`createAt`的值加5天，且实体编号为`SO`，则表达式可以编写为：
-   
+
    ```javascript
    // 推荐优先使用内置函数
    DefaultFunction.DateTimeAddDays(SO.createAt,5)
    // DateTimeAddDays返回的是日期对象，如果需要转换为字符串，则可以调用FormatDefineDate方法
    // DefaultFunction.FormatDefineDate("yyyy-MM-dd",DefaultFunction.DateTimeAddDays(SO.createAt,5))
    ```
-   
+
    是不是和编写普通JavaScript脚本一样？我们再看下判断、循环等场景。
-   
+
    ```javascript
    if(SO.totalFee>=10){
       return a;
@@ -132,37 +132,37 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
       return b;
    }
    ```
-   
+
    当内置函数无法满足需求时，可以编写Javascript代码。语法和普通的Javascript一致，但表达式计算完成后应将结果返回。
-   
+
    ##### 1.1.2 返回值
-   
+
    表达式中只有一条语句，且表达式在第一行，则可以只写表达式，无需显式`return`（支持显式）：
-   
+
    ```javascript
    DefaultFunction.Sum([1,2,3])
    // 或者
    return DefaultFunction.Sum([1,2,3]);
    ```
-   
+
    如果在表达式中使用了类似**判断、分支、函数**等`带返回的语句`或**以空行开始**或**有多行代码**，同时希望整个表达式有返回值，则应显式`return`，否则表达式计算结果为`undefined`。
-   
+
    当计算结果为`undefined`时，不会有任何作用。鉴于此，如果需要返回类似`空字符串`、`null`时，应显式`return`。
-   
+
    ```javascript
    var bxCode = DefaultFunction.Add("bx_",SO.billCode);
    return bxCode;// 换行后必须显式return
    ```
-   
+
    ##### 1.1.3 返回常量
-   
+
    ```javascript
    SO.int1 + SO.int2 // 或者 return SO.int1 + SO.int2
    // 2*4+6 // 或者 return 2*4+6
    ```
-   
+
    ##### 1.1.4 判断
-   
+
    ```javascript
    var x = 1;
    var y = 2;
@@ -170,9 +170,9 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
    	return true;
    }
    ```
-   
+
    ##### 1.1.5 自定义方法
-   
+
    ```javascript
    function plus(x,y){
    	return x+y;
@@ -183,7 +183,7 @@ DefaultFunction.SumByProp(\"SO.soItems\",\"fee\")
    ```javascript
    DefaultFunction.GetContextParameter("userId")
    ```
-2. ### 编译表单
+###  2、编译表单
 
    表达式配置完成后生成并编译前端表单即可查看效果。
 
