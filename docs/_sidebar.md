@@ -16,6 +16,7 @@
 
 * 特性
   * [表达式](/feature/expression)
+  * [子表分页](/feature/children-pagination)
   * [表达式引擎](/feature/expression-engine)
   * [Html模板](/feature/html-template)
   * [消息通信](/feature/message-pipe)
