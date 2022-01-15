@@ -1,1 +1,0 @@
-![farris](media/images/farris.png)
