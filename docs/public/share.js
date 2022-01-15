@@ -37,7 +37,6 @@ function share(hook, vm) {
       }, 1500);
     };
     article.appendChild(href);
-    console.log("ready");
   });
   hook.afterEach(function (html, next) {
     var supriseElement = document.getElementById("suprise");
